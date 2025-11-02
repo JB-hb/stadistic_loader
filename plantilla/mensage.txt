@@ -1,0 +1,28 @@
+Dirección de Regiones
+Control Estadístico de Trámites en Oficina
+Fecha: 
+1/09/2025
+Estado: ARAGUA 
+Oficina: Maracay 
+Código: 005
+Estadísticos de Operatividad Diaria*
+UA: 782
+UCC: 179
+UCO: 31
+RCAM: 52
+UCP: 37
+CI: 252
+TC: 233
+UPCCIB: 19
+UPCC: 54
+Estadísticas de Verificación y Registro
+ICPC: 00
+ICPP: 00
+Estadísticos de Bóveda
+Cédulas entregadas: 299
+Pasaportes entregados: 21
+Prórroga entregadas: 
+Cédulas Ingresadas: 252
+Pasaportes ingresados: 91
+Prórrogas Ingresadas: 
+Novedades relevantes durante el dia:

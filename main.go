@@ -5,9 +5,10 @@ import(
 	"os"
 	"bufio"
 	"strings"
-	//"strconv"
+	"strconv"
+	"time"
 
-
+	"github.com/xuri/excelize/v2"
 
 )
 
@@ -15,7 +16,10 @@ func main(){
 
 	baseOffSet := 1
 
-	//days := []string{"C","D","E","F","G"}
+	days := []string{"C","D","E","F","G"}
+
+	loc, _ := time.LoadLocation("America/Caracas")
+	t := time.Now().In(loc)
 
 	lookUp := map[string]int{
 		"oficina":2,
@@ -48,16 +52,24 @@ func main(){
 
 	file, err := os.Open("plantilla/mensage.txt")
 
+	excel, erre := excelize.OpenFile("plantilla/estadisticas.xlsx")
+
 	if err != nil{
 		fmt.Println("error abriendo archivo")
 	}
+	if erre != nil{
+		fmt.Println("error abriendo archivo excel")
+	}
 
 	defer file.Close()
+	defer excel.Close()
 
 	scanner := bufio.NewScanner(file)
 
 	var multy int
 	var totalOff int
+
+	day := t.Weekday() - 1
 
 	for scanner.Scan(){
 		line := scanner.Text()
@@ -73,23 +85,35 @@ func main(){
 
 		if ok{
 			var name string
-			//var value int
+			var value int
 
 			if words[0] == "oficina"{
 				name = strings.ToLower(words[1])	
 				_, ok := lookUpOffice[name]
 				if ok{
 					multy = lookUpOffice[name]
-					fmt.Println(multy)
 				}
 			}else{
-				//value,_ = strconv.Atoi(words[1])
+				value,_ = strconv.Atoi(words[1])
 				totalOff = baseOffSet + (multy * lookUp[words[0]])
+				var cell string 
+
+				if (day > 5  || day < 0){
+					cell = fmt.Sprintf("%s%d", days[0], totalOff)
+				}else{
+					cell = fmt.Sprintf("%s%d", days[day], totalOff)
+				}
+
+				fmt.Println(cell)
+
+				excel.SetCellValue("Sheet1", cell, value)
 			}
-			var cell string = fmt.Sprintf("%s%d", "A", totalOff)
-			fmt.Println(cell)
 		}
 	}
 
-		
+	o := excel.Save()
+
+	if o  != nil{
+		fmt.Println(o)
+	}
 }

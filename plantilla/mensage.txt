@@ -3,8 +3,8 @@ Control Estadístico de Trámites en Oficina
 Fecha: 
 1/09/2025
 Estado: ARAGUA 
-Oficina: Maracay 
-Código: 005
+Oficina: cagua 
+Código: 192
 Estadísticos de Operatividad Diaria*
 UA: 782
 UCC: 179

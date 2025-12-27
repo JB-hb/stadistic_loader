@@ -7,6 +7,7 @@ import(
 	"strings"
 	"strconv"
 	"time"
+	"http"
 
 	"github.com/xuri/excelize/v2"
 
@@ -14,15 +15,10 @@ import(
 
 func main(){
 
-	baseOffSet := 1
+	//lookUps
 
-	days := []string{"C","D","E","F","G"}
-
-	loc, _ := time.LoadLocation("America/Caracas")
-	t := time.Now().In(loc)
-
-	lookUp := map[string]int{
-		"oficina":2,
+	layoutValuesString := map[string]int{
+		"oficina":0,
 		"ua":1,
 		"ucc":2,
 		"uco":3,
@@ -42,13 +38,67 @@ func main(){
 		"prorrogasingresadas":17,
 	}
 
-	lookUpOffice := map[string]int{
-		"cagua":2,
+	layoutOfficesString := map[string]int{
+		"cagua":0,
 		"maracay":1,
-		"lavictoria":3,
-		"josefelix":4,
-		"sansebastian":5,
+		"lavictoria":2,
+		"josefelix":3,
+		"sansebastian":4,
 	}
+
+	layoutValuesInt := [18]string{
+		"oficina",
+		"ua",
+		"ucc",
+		"uco",
+		"rcam",
+		"ucp",
+		"ci",
+		"tc",
+		"upccib",
+		"upcc",
+		"icpc",
+		"icpp",
+		"cédulasentregadas",
+		"pasaportesentregados",
+		"prorrogasentregadas",
+		"cédulasingresadas",
+		"pasaportesingresados",
+		"prorrogasingresadas",
+	}
+
+	layoutOfficesInt := [5]string{
+		"cagua",
+		"maracay",
+		"lavictoria",
+		"josefelix",
+		"sansebastian",
+
+	}
+
+
+	//http server
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("POST /load_office", handleRoot)
+	mux.HandleFunc("GET /stadistic/today", handleRoot)
+
+	func handleRoot(writer http.ResponseWriter, req http.Requerst){
+		fmt.Fprintf(w, "Hi excel mf")
+	}
+
+
+
+	//file management
+
+	baseOffSet := 1
+
+	days := []string{"C","D","E","F","G"}
+
+	loc, _ := time.LoadLocation("America/Caracas")
+	t := time.Now().In(loc)
+
+	
 
 	file, err := os.Open("plantilla/mensage.txt")
 
@@ -95,7 +145,7 @@ func main(){
 				}
 			}else{
 				value,_ = strconv.Atoi(words[1])
-				totalOff = baseOffSet + (multy * lookUp[words[0]])
+				totalOff = baseOffSet + (multy * 17) + lookUp[words[0]]
 				var cell string 
 
 				if (day > 5  || day < 0){
